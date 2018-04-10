@@ -8,13 +8,18 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/h976353715/clound-cms.git
-          username: 976353715@qq.com
-          password: huangqi19940313
+          uri: https://github.com/h976353715/cloud-cms.git
+          username:
+          password:
           #basedir: config-repo
           search-paths: cloud-config-repo
+      overrideNone: true
       label: master
-
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
 
 eureka:
   client:
