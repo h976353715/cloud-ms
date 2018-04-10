@@ -1,0 +1,24 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: configServer
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/h976353715/clound-cms.git
+          username: 976353715@qq.com
+          password: huangqi19940313
+          #basedir: config-repo
+          search-paths: cloud-config-repo
+      label: master
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+
+
