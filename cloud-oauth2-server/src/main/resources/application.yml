@@ -1,0 +1,13 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: cloud-oauth2
+
+security:
+  oauth2:
+    clientId: hq
+    clientSecret: hq
+    scope: web
+

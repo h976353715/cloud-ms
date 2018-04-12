@@ -1,7 +1,6 @@
 package com.hq;
 
-import static org.junit.Assert.assertTrue;
-
+import com.hq.entity.User;
 import org.junit.Test;
 
 /**
@@ -15,6 +14,6 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        assertTrue( true );
+        System.out.printf(new User().toJsonString());
     }
 }
