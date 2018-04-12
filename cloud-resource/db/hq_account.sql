@@ -16,26 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`hq_account` /*!40100 DEFAULT CHARACTER 
 
 USE `hq_account`;
 
-/*Table structure for table `t_account` */
-
-DROP TABLE IF EXISTS `t_account`;
-
-CREATE TABLE `t_account` (
-  `id` char(32) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `phone` varchar(11) NOT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `sex` int(1) DEFAULT NULL,
-  `createTime` datetime DEFAULT CURRENT_TIMESTAMP,
-  `createUser` varchar(50) DEFAULT NULL,
-  `updateTime` datetime DEFAULT NULL,
-  `updateUser` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户表';
-
-/*Data for the table `t_account` */
-
 /*Table structure for table `t_permission` */
 
 DROP TABLE IF EXISTS `t_permission`;
@@ -45,6 +25,7 @@ CREATE TABLE `t_permission` (
   `perCode` varchar(50) DEFAULT NULL,
   `perPath` varchar(100) DEFAULT NULL,
   `preDesc` varchar(100) DEFAULT NULL,
+  `delFlag` int(1) DEFAULT '0',
   `createTime` datetime DEFAULT NULL,
   `createUser` varchar(50) DEFAULT NULL,
   `updateTime` datetime DEFAULT NULL,
@@ -72,6 +53,27 @@ CREATE TABLE `t_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 /*Data for the table `t_role` */
+
+/*Table structure for table `t_user` */
+
+DROP TABLE IF EXISTS `t_user`;
+
+CREATE TABLE `t_user` (
+  `id` char(32) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `phone` varchar(11) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `sex` int(1) DEFAULT NULL,
+  `delFlag` int(1) DEFAULT '0',
+  `createTime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `createUser` varchar(50) DEFAULT NULL,
+  `updateTime` datetime DEFAULT NULL,
+  `updateUser` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户表';
+
+/*Data for the table `t_user` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
