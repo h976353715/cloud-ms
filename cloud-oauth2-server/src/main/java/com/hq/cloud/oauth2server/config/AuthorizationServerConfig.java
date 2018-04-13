@@ -1,19 +1,19 @@
 package com.hq.cloud.oauth2server.config;
 
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
+import com.hq.cloud.oauth2server.util.BCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
@@ -28,21 +28,24 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  * @date 2018/4/12 15:16
  */
 @Configuration
-@ConfigurationProperties(prefix = "security.oauth2")
+@EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private Logger log = LoggerFactory.getLogger(AuthorizationServerConfig.class);
     /**
      * 客户端ID
      */
+    @Value("${security.oauth2.clientId}")
     private String clientId;
     /**
      * 客户端安全码
      */
+    @Value("${security.oauth2.clientSecret}")
     private String clientSecret;
     /**
      * 客户端范围
      */
+    @Value("${security.oauth2.scope}")
     private String scope;
 
     @Autowired
@@ -70,13 +73,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient(clientId)
-                .secret(clientSecret)
-                .scopes(scope)
-                .authorizedGrantTypes("password", "refresh_token", "authorization_code");
+                .withClient("hq")
+                .secret(BCryptUtil.encode("hq"))
+                .scopes("xx")
+                .authorizedGrantTypes("password", "refresh_token");
         log.info("ClientDetailsServiceConfigurer is complete!");
     }
-
     /**
      * 配置授权、令牌的访问端点和令牌服务
      * tokenStore：采用redis储存
@@ -87,9 +89,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
-                .accessTokenConverter(accessTokenConverter())
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService());
+                //.accessTokenConverter(accessTokenConverter())
+                .authenticationManager(authenticationManager);
+                //.userDetailsService(userDetailsService());
         log.info("AuthorizationServerEndpointsConfigurer is complete.");
     }
 
@@ -101,11 +103,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

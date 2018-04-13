@@ -10,7 +10,7 @@ public class User extends BaseEntity{
 
     private String id;
     /**
-     * 用户民
+     * 用户名
      */
     private String userName;
     /**

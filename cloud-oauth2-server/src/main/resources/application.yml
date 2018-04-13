@@ -4,10 +4,24 @@ server:
 spring:
   application:
     name: cloud-oauth2
+  redis:
+    host: localhost
+    port: 6379
+    password: 123
+
 
 security:
   oauth2:
+    #resource:
+     #filter-order: 3
     clientId: hq
     clientSecret: hq
-    scope: web
+    scope: xx
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+logging:
+  level:
+    com.xxx: trace
