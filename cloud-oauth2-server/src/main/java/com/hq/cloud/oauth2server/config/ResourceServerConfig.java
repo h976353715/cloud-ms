@@ -32,7 +32,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 // 授权请求
                 .authorizeRequests()
-                .antMatchers("/oauth/*","/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

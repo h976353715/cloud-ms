@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class},
+@SpringBootApplication(
         scanBasePackages={"com.hq.cloud.oauth2server.*"})
 public class CloudOauth2ServerApplication {
 

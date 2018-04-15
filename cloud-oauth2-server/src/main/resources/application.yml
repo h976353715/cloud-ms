@@ -8,6 +8,24 @@ spring:
     host: localhost
     port: 6379
     password: 123
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/hq_account?characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    #tomcat:
+      #max-idle: 5
+      #max-wait: 10000
+      #min-idle: 2
+      #initial-size: 3
+      #validation-query: select 1
+    #hikari:
+      #jdbc-url: jdbc:mysql://127.0.0.1:3306/hq_account?characterEncoding=UTF-8
+      #driver-class-name: com.mysql.jdbc.Driver
+      #username: root
+      #password: root
+
+
 
 
 security:

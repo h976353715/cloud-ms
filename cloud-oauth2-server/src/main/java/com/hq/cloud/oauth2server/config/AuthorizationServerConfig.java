@@ -1,25 +1,39 @@
 package com.hq.cloud.oauth2server.config;
 
+import com.hq.cloud.oauth2server.converter.CustomerAutenticationConverter;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
 import com.hq.cloud.oauth2server.util.BCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+
+import javax.sql.DataSource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Administrator
@@ -54,6 +68,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients()
@@ -72,13 +92,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("hq")
-                .secret(BCryptUtil.encode("hq"))
-                .scopes("xx")
-                .authorizedGrantTypes("password", "refresh_token");
+        clients.withClientDetails(clientDetails());
         log.info("ClientDetailsServiceConfigurer is complete!");
     }
+
     /**
      * 配置授权、令牌的访问端点和令牌服务
      * tokenStore：采用redis储存
@@ -89,15 +106,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
-                //.accessTokenConverter(accessTokenConverter())
+                .accessTokenConverter(accessTokenConverter())
                 .authenticationManager(authenticationManager);
-                //.userDetailsService(userDetailsService());
+
         log.info("AuthorizationServerEndpointsConfigurer is complete.");
     }
 
     @Bean
     public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        return new JwtTokenStore(accessTokenConverter());
     }
 
     @Bean
@@ -106,10 +123,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
-    public AccessTokenConverter accessTokenConverter() {
+    public ClientDetailsService clientDetails() {
+        return new JdbcClientDetailsService(dataSource);
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hq-jwt.jks"), "hq940313".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         // 设置签名
-        jwtAccessTokenConverter.setSigningKey("Hq");
+        jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
+        //jwtAccessTokenConverter.setAccessTokenConverter(customTokenConverter());
         return jwtAccessTokenConverter;
+    }
+
+    @Bean
+    public DefaultAccessTokenConverter customTokenConverter(){
+        DefaultAccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
+        tokenConverter.setUserTokenConverter(new CustomerAutenticationConverter());
+        return tokenConverter;
     }
 }

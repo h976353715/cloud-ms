@@ -8,7 +8,7 @@
     <artifactId>common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>common</name>
+    <name>cloud-common</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -35,6 +35,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

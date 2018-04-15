@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,22 +36,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //关闭csrf，拦截所有请求
         http.requestMatchers().anyRequest()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/*","/user").permitAll();
+                .authorizeRequests().antMatchers("/**").authenticated();
+                //.antMatchers("/oauth/*","/user").permitAll();
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/favor.ico");
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //替换成自己验证规则
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-        /*auth.inMemoryAuthentication()
-                .withUser("user_1").password("{noop}123456").authorities("USER")
-                .and()
-                .withUser("user_2").password("{noop}123456").authorities("USER");*/
     }
 
-    //不定义没有password
+    /**
+     * password 验证需要设置
+     */
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -61,14 +65,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-   /* @Bean
-    public static MyPasswordEncoder passwordEncoder() {
-        return new MyPasswordEncoder();
-    }*/
-
-   /* @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }*/
 
 }
