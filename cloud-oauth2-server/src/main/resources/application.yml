@@ -9,7 +9,7 @@ spring:
     port: 6379
     password: 123
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/hq_account?characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/hq_oauth?characterEncoding=UTF-8
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -28,13 +28,13 @@ spring:
 
 
 
-security:
-  oauth2:
+#security:
+#  oauth2:
     #resource:
      #filter-order: 3
-    clientId: hq
-    clientSecret: hq
-    scope: xx
+   # clientId: hq
+    #clientSecret: hq
+   # scope: xx
 
 eureka:
   client:
@@ -42,4 +42,4 @@ eureka:
       defaultZone: http://localhost:8888/eureka/
 logging:
   level:
-    com.xxx: trace
+    com.xxx: debug

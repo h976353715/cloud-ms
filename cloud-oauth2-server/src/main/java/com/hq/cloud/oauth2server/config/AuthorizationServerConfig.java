@@ -1,13 +1,9 @@
 package com.hq.cloud.oauth2server.config;
 
-import com.hq.cloud.oauth2server.converter.CustomerAutenticationConverter;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
-import com.hq.cloud.oauth2server.util.BCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -22,11 +18,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
@@ -46,21 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private Logger log = LoggerFactory.getLogger(AuthorizationServerConfig.class);
-    /**
-     * 客户端ID
-     */
-    @Value("${security.oauth2.clientId}")
-    private String clientId;
-    /**
-     * 客户端安全码
-     */
-    @Value("${security.oauth2.clientSecret}")
-    private String clientSecret;
-    /**
-     * 客户端范围
-     */
-    @Value("${security.oauth2.scope}")
-    private String scope;
+
 
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
@@ -99,48 +78,79 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     /**
      * 配置授权、令牌的访问端点和令牌服务
      * tokenStore：采用redis储存
-     * accessTokenConverter：采用jwt方式生成token
      * authenticationManager:身份认证管理器, 用于"password"授权模式
-     * userDetailsService: 配合身份认证管理器, 检查用户名密码有效性
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore())
-                .accessTokenConverter(accessTokenConverter())
-                .authenticationManager(authenticationManager);
+        endpoints
+                .authenticationManager(authenticationManager)
+                .tokenServices(tokenServices());
 
         log.info("AuthorizationServerEndpointsConfigurer is complete.");
     }
 
+    /**
+     * jwt存储方式
+     * @return
+     */
     @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
     }
 
+    /**
+     * redis存储方式
+     * @return
+     */
+    @Bean
+    public TokenStore redisTokenStore() {
+        return new RedisTokenStore(redisConnectionFactory);
+    }
+
+    /**
+     * 用户信息
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
 
+    /**
+     * 客户端信息配置在数据库
+     * @return
+     */
     @Bean
     public ClientDetailsService clientDetails() {
         return new JdbcClientDetailsService(dataSource);
     }
 
+    /**
+     * 采用RSA加密生成jwt
+     * @return
+     */
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hq-jwt.jks"), "hq940313".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        // 设置签名
         jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
-        //jwtAccessTokenConverter.setAccessTokenConverter(customTokenConverter());
+        //jwtAccessTokenConverter.setAccessTokenConverter(new CustomerAccessTokenConverter());
         return jwtAccessTokenConverter;
     }
 
+    /**
+     * 配置生成token的有效期以及存储方式（此处用的redis）
+     * @return
+     */
     @Bean
-    public DefaultAccessTokenConverter customTokenConverter(){
-        DefaultAccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
-        tokenConverter.setUserTokenConverter(new CustomerAutenticationConverter());
-        return tokenConverter;
+    public DefaultTokenServices tokenServices() {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(redisTokenStore());
+        defaultTokenServices.setTokenEnhancer(accessTokenConverter());
+        defaultTokenServices.setClientDetailsService(clientDetails());
+        defaultTokenServices.setSupportRefreshToken(true);
+        defaultTokenServices.setAccessTokenValiditySeconds((int) TimeUnit.SECONDS.toSeconds(60));
+        defaultTokenServices.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1));
+        return defaultTokenServices;
     }
 }
