@@ -1,12 +1,14 @@
 package com.hq.entity;
 
+import com.hq.base.BaseEntity;
+
 /**
  * @author hq
  * @Package com.hq.entity
  * @Description: 资源类
  * @date 2018/4/12 13:58
  */
-public class Permission extends BaseEntity{
+public class Permission extends BaseEntity {
 
     private String id;
 

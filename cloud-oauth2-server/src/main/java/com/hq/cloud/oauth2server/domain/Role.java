@@ -1,6 +1,6 @@
 package com.hq.cloud.oauth2server.domain;
 
-import com.hq.entity.BaseEntity;
+import com.hq.base.BaseEntity;
 
 import java.util.List;
 

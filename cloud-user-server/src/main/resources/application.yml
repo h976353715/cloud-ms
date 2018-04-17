@@ -1,0 +1,20 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: cloud-user
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/hq_account?characterEncoding=UTF-8
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  config-location: classpath:mapper/*.xml
+  type-aliases-package: com.hq.clouduser.pojo
+#pagehelper·ÖÒ³²å¼þ
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql

@@ -1,4 +1,4 @@
-package com.hq.entity;
+package com.hq.base;
 
 import com.hq.constant.Constant;
 import org.apache.commons.lang3.builder.ToStringBuilder;
