@@ -41,7 +41,7 @@ public class Result<T> implements Serializable {
 
     public Result(String respCode, String respDesc, T respData) {
         this.respCode = respCode;
-        this.respCode = respDesc;
+        this.respDesc = respDesc;
         this.respData = respData;
     }
 

@@ -1,5 +1,6 @@
 package com.hq;
 
+import com.hq.entity.Result;
 import com.hq.entity.User;
 import org.junit.Test;
 
@@ -14,6 +15,6 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        System.out.printf(new User().toJsonString());
+        System.out.printf(new Result<User>("ok","sss",new User()).toString());
     }
 }
