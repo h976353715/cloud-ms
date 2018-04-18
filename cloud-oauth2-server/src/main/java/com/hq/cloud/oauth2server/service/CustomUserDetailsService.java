@@ -3,7 +3,10 @@ package com.hq.cloud.oauth2server.service;
 import com.hq.cloud.oauth2server.domain.CustomUserDetail;
 import com.hq.cloud.oauth2server.domain.Permission;
 import com.hq.cloud.oauth2server.domain.Role;
+import com.hq.cloud.oauth2server.feign.UserClient;
 import com.hq.cloud.oauth2server.util.BCryptUtil;
+import com.hq.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,10 +23,15 @@ import java.util.List;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+    @Autowired
+    private UserClient userClient;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        CustomUserDetail user = new CustomUserDetail();
-        if ("huang".equals(s)) {
+        CustomUserDetail userDetail = new CustomUserDetail();
+
+        User user1 = userClient.queryByAuth("1");
+        if ("huang".equals(user1.getUserName())) {
             Permission permission = new Permission();
             permission.setPerCode("user:edit");
             List<Permission> plist = new ArrayList<>();
@@ -35,13 +43,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             List<Role> roleList = new ArrayList<>();
             roleList.add(role);
-            user.setRoles(roleList);
-            user.setUserName(s);
-            user.setPassWord(BCryptUtil.encode("123456"));
+            userDetail.setRoles(roleList);
+            userDetail.setUserName(s);
+            userDetail.setPassWord(BCryptUtil.encode("123456"));
         } else {
             throw new UsernameNotFoundException(s);
         }
 
-        return user;
+        return userDetail;
     }
 }

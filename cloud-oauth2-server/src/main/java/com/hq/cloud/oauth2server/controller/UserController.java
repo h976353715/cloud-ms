@@ -18,4 +18,9 @@ public class UserController {
     public Principal user(Principal user){
         return user;
     }
+
+    /*@RequestMapping("/oauth2/error")
+    public Result error(){
+
+    }*/
 }

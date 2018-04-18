@@ -35,11 +35,15 @@ spring:
    # clientId: hq
     #clientSecret: hq
    # scope: xx
-
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8888/eureka/
+
 logging:
   level:
-    com.xxx: debug
+    com.hq.*: debug
+
+feign:
+  hystrix:
+    enabled: true

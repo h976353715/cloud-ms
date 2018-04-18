@@ -8,13 +8,23 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/hq_account?characterEncoding=UTF-8
     username: root
     password: root
-    type: com.alibaba.druid.pool.DruidDataSource
+   # type: com.alibaba.druid.pool.DruidDataSource
 mybatis:
-  config-location: classpath:mapper/*.xml
   type-aliases-package: com.hq.clouduser.pojo
-#pagehelper·ÖÒ³²å¼þ
+  mapper-locations: classpath:mapper/*.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+
+#pagehelper
 pagehelper:
     helperDialect: mysql
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+logging:
+  level:
+    com.hq.clouduser.dao: debug
+
