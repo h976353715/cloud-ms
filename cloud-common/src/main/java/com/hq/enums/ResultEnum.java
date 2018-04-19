@@ -15,7 +15,16 @@ public enum ResultEnum {
     /**
      * 失败
      */
-    FAIL("10", "失败");
+    FAIL("10", "失败"),
+    /**
+     * 未登录返回
+     */
+    NOAUTHENTICATE("401","token或无效"),
+    /**
+     * 无权限返回
+     */
+    NOAUTHENTIZATE("401","无权限");
+
 
     ResultEnum(String code, String desc) {
         this.code = code;

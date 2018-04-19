@@ -1,10 +1,14 @@
 package com.hq.cloud.oauth2server.config;
 
+import com.hq.cloud.oauth2server.handler.UnAccessDeniedHandler;
+import com.hq.cloud.oauth2server.handler.UnauthorizedHandler;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,6 +30,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService customUserDetailsService;
 
     /**
+     * 注册 401 处理器
+     */
+    @Autowired
+    private UnauthorizedHandler unauthorizedHandler;
+
+    /**
+     * 注册 403 处理器
+     */
+    @Autowired
+    private UnAccessDeniedHandler unAccessDeniedHandler;
+
+
+    /**
      * 拦截配置
      *
      * @param http
@@ -36,8 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //关闭csrf，拦截所有请求
         http.requestMatchers().anyRequest()
                 .and()
-                .authorizeRequests().antMatchers("/**").authenticated();
-                //.antMatchers("/oauth/*","/user").permitAll();
+                .authorizeRequests().antMatchers("/**").authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .accessDeniedHandler(unAccessDeniedHandler);
     }
 
     @Override
@@ -49,7 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //替换成自己验证规则
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        //auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(authenticationProvider());
     }
 
     /**
@@ -64,6 +84,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setHideUserNotFoundExceptions(false);
+        return  provider;
     }
 
 }

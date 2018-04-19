@@ -82,7 +82,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
+        endpoints.pathMapping("/oauth/error","/oauth2/error")
                 .authenticationManager(authenticationManager)
                 .tokenServices(tokenServices());
 

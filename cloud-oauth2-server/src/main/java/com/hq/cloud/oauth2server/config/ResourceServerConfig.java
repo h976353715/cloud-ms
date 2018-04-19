@@ -1,12 +1,13 @@
 package com.hq.cloud.oauth2server.config;
 
+import com.hq.cloud.oauth2server.handler.UnAccessDeniedHandler;
+import com.hq.cloud.oauth2server.handler.UnauthorizedHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Administrator
@@ -18,6 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+    /**
+     * 注册 401 处理器
+     */
+    @Autowired
+    private UnauthorizedHandler unauthorizedHandler;
+
+    /**
+     * 注册 403 处理器
+     */
+    @Autowired
+    private UnAccessDeniedHandler unAccessDeniedHandler;
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId("oauth").stateless(true);
@@ -28,7 +41,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                 // 授权请求
                 .authorizeRequests()

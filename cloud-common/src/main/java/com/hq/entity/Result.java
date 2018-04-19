@@ -33,6 +33,11 @@ public class Result<T> implements Serializable {
     public Result() {
     }
 
+    public Result(ResultEnum resultEnum) {
+        this.respCode = resultEnum.getCode();
+        this.respDesc = resultEnum.getDesc();
+    }
+
     public Result(String respCode, String respDesc) {
         this.respCode = respCode;
         this.respDesc = respDesc;
