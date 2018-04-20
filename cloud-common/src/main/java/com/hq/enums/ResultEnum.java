@@ -23,7 +23,15 @@ public enum ResultEnum {
     /**
      * 无权限返回
      */
-    NOAUTHENTIZATE("401","无权限");
+    NOAUTHENTIZATE("403","无权限"),
+    /**
+     * 登录成功
+     */
+    LOGIN_SUCCESS("200","登录成功"),
+    /**
+     * 登录失败
+     */
+    LOGIN_FAIL("500","登录失败");
 
 
     ResultEnum(String code, String desc) {

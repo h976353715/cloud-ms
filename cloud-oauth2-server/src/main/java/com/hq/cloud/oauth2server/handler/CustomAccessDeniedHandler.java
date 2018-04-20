@@ -18,9 +18,11 @@ import java.io.IOException;
  * @date 2018/4/19 10:29
  */
 @Component
-public class UnAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+
     /**
-     * 无权限处理
+     * 403无权限处理
      * @param httpServletRequest
      * @param httpServletResponse
      * @param e

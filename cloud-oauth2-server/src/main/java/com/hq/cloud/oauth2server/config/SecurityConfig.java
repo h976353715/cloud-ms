@@ -1,7 +1,10 @@
 package com.hq.cloud.oauth2server.config;
 
-import com.hq.cloud.oauth2server.handler.UnAccessDeniedHandler;
-import com.hq.cloud.oauth2server.handler.UnauthorizedHandler;
+import com.hq.cloud.oauth2server.filter.CustomAuthenticationFilter;
+import com.hq.cloud.oauth2server.handler.CustomAccessDeniedHandler;
+import com.hq.cloud.oauth2server.handler.CustomAuthEntryPoint;
+import com.hq.cloud.oauth2server.handler.CustomAuthcFailureHandler;
+import com.hq.cloud.oauth2server.handler.CustomAuthcSuccessHandler;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,14 +36,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 注册 401 处理器
      */
     @Autowired
-    private UnauthorizedHandler unauthorizedHandler;
+    private CustomAuthEntryPoint customAuthEntryPoint;
 
     /**
      * 注册 403 处理器
      */
     @Autowired
-    private UnAccessDeniedHandler unAccessDeniedHandler;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    @Autowired
+    private CustomAuthcFailureHandler customAuthcFailureHandler;
+
+    @Autowired
+    private CustomAuthcSuccessHandler customAuthcSuccessHandler;
 
     /**
      * 拦截配置
@@ -53,10 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //关闭csrf，拦截所有请求
         http.requestMatchers().anyRequest()
                 .and()
-                .authorizeRequests().antMatchers("/**").authenticated()
+                .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .accessDeniedHandler(unAccessDeniedHandler);
+                .exceptionHandling().authenticationEntryPoint(customAuthEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler);
+                //.and().formLogin().loginPage("/")
+                //.and().addFilterAt(customAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -87,12 +97,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         provider.setHideUserNotFoundExceptions(false);
-        return  provider;
+        return provider;
+    }
+
+    @Bean
+    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthcFailureHandler);
+        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthcSuccessHandler);
+        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+        customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        return customAuthenticationFilter;
+
     }
 
 }

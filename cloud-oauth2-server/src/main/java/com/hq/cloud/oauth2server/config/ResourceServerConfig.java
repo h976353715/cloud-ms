@@ -1,7 +1,7 @@
 package com.hq.cloud.oauth2server.config;
 
-import com.hq.cloud.oauth2server.handler.UnAccessDeniedHandler;
-import com.hq.cloud.oauth2server.handler.UnauthorizedHandler;
+import com.hq.cloud.oauth2server.handler.CustomAccessDeniedHandler;
+import com.hq.cloud.oauth2server.handler.CustomAuthEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,13 +23,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      * 注册 401 处理器
      */
     @Autowired
-    private UnauthorizedHandler unauthorizedHandler;
+    private CustomAuthEntryPoint customAuthEntryPoint;
 
     /**
      * 注册 403 处理器
      */
     @Autowired
-    private UnAccessDeniedHandler unAccessDeniedHandler;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -40,13 +40,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling()
-                .and()
                 // 授权请求
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                ;
 
     }
 }

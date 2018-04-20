@@ -18,9 +18,9 @@ import java.io.IOException;
  * @date 2018/4/19 10:22
  */
 @Component
-public class UnauthorizedHandler implements AuthenticationEntryPoint {
+public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
     /**
-     * 未登录时候返回处理
+     * 401 返回处理
      * @param httpServletRequest
      * @param httpServletResponse
      * @param e
