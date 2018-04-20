@@ -1,6 +1,6 @@
 package com.hq.cloud.oauth2server.converter;
 
-import com.hq.cloud.oauth2server.domain.CustomUserDetail;
+import com.hq.cloud.oauth2server.domain.UserDetail;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
@@ -28,7 +28,7 @@ public class CustomerAccessTokenConverter extends DefaultAccessTokenConverter {
         public Map<String, ?> convertUserAuthentication(Authentication authentication) {
             LinkedHashMap response = new LinkedHashMap();
             response.put("user_name", authentication.getName());
-            response.put("phone", ((CustomUserDetail) authentication.getPrincipal()).getPhone());
+            response.put("phone", ((UserDetail) authentication.getPrincipal()).getPhone());
             if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
                 response.put("authorities", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
             }

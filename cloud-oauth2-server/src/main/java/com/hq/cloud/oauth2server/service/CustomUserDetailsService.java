@@ -1,6 +1,6 @@
 package com.hq.cloud.oauth2server.service;
 
-import com.hq.cloud.oauth2server.domain.CustomUserDetail;
+import com.hq.cloud.oauth2server.domain.UserDetail;
 import com.hq.cloud.oauth2server.domain.Permission;
 import com.hq.cloud.oauth2server.domain.Role;
 import com.hq.cloud.oauth2server.feign.UserClient;
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        CustomUserDetail userDetail = new CustomUserDetail();
+        UserDetail userDetail = new UserDetail();
 
         User user1 = userClient.queryByAuth("1");
         if ("huang".equals(user1.getUserName())) {

@@ -14,7 +14,7 @@ import java.util.Set;
  * @Description: ${TODO}(用一句话描述该文件做什么)
  * @date 2018/4/13 11:28
  */
-public class CustomUserDetail implements UserDetails {
+public class UserDetail implements UserDetails {
 
     private String id;
     /**

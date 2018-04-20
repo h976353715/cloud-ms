@@ -1,7 +1,7 @@
 
 package com.hq.cloud.oauth2server.filter;
 
-import com.hq.cloud.oauth2server.domain.CustomUserDetail;
+import com.hq.cloud.oauth2server.domain.UserDetail;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +31,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             ObjectMapper mapper = new ObjectMapper();
             UsernamePasswordAuthenticationToken authRequest = null;
             try (InputStream in = request.getInputStream()) {
-                CustomUserDetail authenticationBean = mapper.readValue(in, CustomUserDetail.class);
+                UserDetail authenticationBean = mapper.readValue(in, UserDetail.class);
                 authRequest = new UsernamePasswordAuthenticationToken(
                         authenticationBean.getUsername(), authenticationBean.getPassword());
             } catch (IOException e) {
