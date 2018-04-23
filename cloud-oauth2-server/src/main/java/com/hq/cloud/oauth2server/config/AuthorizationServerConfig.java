@@ -134,6 +134,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hq-jwt.jks"), "hq940313".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
+        //jwtAccessTokenConverter.setAccessTokenConverter(new CustomerAccessTokenConverter());
         return jwtAccessTokenConverter;
     }
 

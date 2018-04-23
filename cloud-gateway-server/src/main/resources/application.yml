@@ -1,0 +1,39 @@
+server:
+  port: 9999
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+logging:
+  level:
+    com.hq.*: debug
+
+spring:
+  application:
+    name: gateway-server
+  security:
+    basic:
+      enabled: false
+
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: cloud-user
+
+security:
+  oauth2:
+    client:
+      client-id: hq
+      client-secret: hq
+      access-token-uri: http://localhost:8000/auth/token
+      userAuthorizationUri: http://localhost:8000/auth/authorize
+      resource:
+        userInfoUri: http://localhost:8000/auth/user
+        tokenInfoUri: http://localhost:8000/auth/check_token
+
+
+
+
+

@@ -7,10 +7,7 @@ import com.hq.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Administrator
@@ -27,7 +24,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user/{id}")
+    @GetMapping("/{id}")
     public Result<User> query(@PathVariable("id")String id){
         User user = userService.selectByPrimaryKey(id);
         return Result.returnOk(user);
