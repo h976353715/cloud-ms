@@ -56,8 +56,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients()
-                .tokenKeyAccess("isAuthenticated()")
-                .checkTokenAccess("permitAll()");
+                .checkTokenAccess("isAuthenticated()")
+                .tokenKeyAccess("permitAll()");
         log.info("AuthorizationServerSecurityConfigurer is complete");
     }
 
@@ -82,7 +82,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.pathMapping("/oauth/error","/oauth2/error")
+        endpoints
                 .authenticationManager(authenticationManager)
                 .tokenServices(tokenServices());
 

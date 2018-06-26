@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
+@EnableResourceServer
 public class CloudOauth2ServerApplication {
 
     public static void main(String[] args) {

@@ -14,7 +14,7 @@ import javax.servlet.Filter;
  * @Description: SecurityConfig
  * @date 2018/4/23 15:59
  */
-@Configuration
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -23,8 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
-                .antMatcher("/**")
-                .authorizeRequests()
                 .antMatchers("/demo", "/login**")
                 .permitAll()
                 .anyRequest()

@@ -60,10 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //关闭csrf，拦截所有请求
         http.csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(customAuthEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler);
+                .authorizeRequests().anyRequest().authenticated();
     }
 
     @Override
@@ -102,15 +99,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
-        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthcFailureHandler);
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthcSuccessHandler);
-        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-        customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        return customAuthenticationFilter;
-
-    }
+//    @Bean
+//    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+//        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthcFailureHandler);
+//        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthcSuccessHandler);
+//        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+//        customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+//        return customAuthenticationFilter;
+//
+//    }
 
 }
