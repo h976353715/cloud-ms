@@ -1,12 +1,9 @@
 package com.hq.cloud.oauth2server.service;
 
-import com.hq.cloud.oauth2server.domain.UserDetail;
 import com.hq.cloud.oauth2server.domain.Permission;
 import com.hq.cloud.oauth2server.domain.Role;
-import com.hq.cloud.oauth2server.feign.UserClient;
+import com.hq.cloud.oauth2server.domain.UserDetail;
 import com.hq.cloud.oauth2server.util.BCryptUtil;
-import com.hq.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,15 +20,12 @@ import java.util.List;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserClient userClient;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetail userDetail = new UserDetail();
 
-        User user1 = userClient.queryByAuth("1");
-        if ("huang".equals(user1.getUserName())) {
+        if ("huang".equals(s)) {
             Permission permission = new Permission();
             permission.setPerCode("user:edit");
             List<Permission> plist = new ArrayList<>();

@@ -59,14 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //关闭csrf，拦截所有请求
-        http.requestMatchers().antMatchers("/oauth/authorize")
-                .and()
+        http.csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(customAuthEntryPoint)
                 .accessDeniedHandler(customAccessDeniedHandler);
-                //.and().formLogin().loginPage("/")
-                //.and().addFilterAt(customAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
