@@ -1,4 +1,4 @@
-package com.hq.cloud.oauth2server.handler;
+package com.hq.gateway.handler;
 
 import com.hq.entity.Result;
 import org.springframework.security.core.AuthenticationException;

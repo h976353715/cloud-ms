@@ -1,5 +1,7 @@
 package com.hq.cloud.oauth2server.config;
 
+import com.hq.cloud.oauth2server.handler.CustomAuthEntryPoint;
+import com.hq.cloud.oauth2server.handler.CustomWebResponseExceptionTranslator;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -51,13 +51,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private DataSource dataSource;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
+    private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CustomWebResponseExceptionTranslator customWebResponseExceptionTranslator;
+    @Autowired
+    private CustomAuthEntryPoint customAuthEntryPoint;
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients()
                 .checkTokenAccess("isAuthenticated()")
-                .tokenKeyAccess("permitAll()");
+                .tokenKeyAccess("permitAll()")
+                .authenticationEntryPoint(customAuthEntryPoint);
         log.info("AuthorizationServerSecurityConfigurer is complete");
     }
 
@@ -84,40 +88,33 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager)
-                .tokenServices(tokenServices());
+                .userDetailsService(customUserDetailsService)
+                .tokenServices(tokenServices())
+                .exceptionTranslator(customWebResponseExceptionTranslator);
 
         log.info("AuthorizationServerEndpointsConfigurer is complete.");
     }
 
-    /**
-     * jwt存储方式
-     * @return
-     */
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }
 
     /**
      * redis存储方式
+     *
      * @return
      */
-    @Bean
+    @Bean("redisTokenStore")
     public TokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
 
-    /**
-     * 用户信息
-     * @return
-     */
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(jwtTokenEnhancer());
     }
+
 
     /**
      * 客户端信息配置在数据库
+     *
      * @return
      */
     @Bean
@@ -127,26 +124,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /**
      * 采用RSA加密生成jwt
+     *
      * @return
      */
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
+    public JwtAccessTokenConverter jwtTokenEnhancer() {
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hq-jwt.jks"), "hq940313".toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
-        //jwtAccessTokenConverter.setAccessTokenConverter(new CustomerAccessTokenConverter());
         return jwtAccessTokenConverter;
     }
 
     /**
      * 配置生成token的有效期以及存储方式（此处用的redis）
+     *
      * @return
      */
     @Bean
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(redisTokenStore());
-        defaultTokenServices.setTokenEnhancer(accessTokenConverter());
+        defaultTokenServices.setTokenEnhancer(jwtTokenEnhancer());
         defaultTokenServices.setClientDetailsService(clientDetails());
         defaultTokenServices.setSupportRefreshToken(true);
         defaultTokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(30));

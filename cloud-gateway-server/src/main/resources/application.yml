@@ -12,6 +12,10 @@ logging:
 spring:
   application:
     name: gateway-server
+  redis:
+      host: localhost
+      port: 6379
+      password: 123
 
 
 zuul:
@@ -20,20 +24,26 @@ zuul:
       path: /api-a/**
       serviceId: cloud-user
 
+
 security:
   oauth2:
     client:
-      client-id: hq
-      client-secret: hq
-      access-token-uri: http://localhost:8000/auth/token
-      grant-type: password,client_credentials
+      clientId: hq
+      clientSecret: hq
+      userAuthorizationUri: http://localhost:8000/oauth/authorize
+      grant-type: password
       scope: xx
+      access-token-uri: http://localhost:8000/oauth/token
     resource:
-      userInfoUri: http://localhost:8000/auth/user
+      userInfoUri: http://localhost:8000/user
+    authorization:
+      check-token-access: http://localhost:8000/oauth/check_token
+  basic:
+    enabled: false
 
 
-
-
-
+feign:
+  hystrix:
+    enabled: true
 
 

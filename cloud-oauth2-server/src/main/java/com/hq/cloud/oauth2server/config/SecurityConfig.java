@@ -1,10 +1,5 @@
 package com.hq.cloud.oauth2server.config;
 
-import com.hq.cloud.oauth2server.filter.CustomAuthenticationFilter;
-import com.hq.cloud.oauth2server.handler.CustomAccessDeniedHandler;
-import com.hq.cloud.oauth2server.handler.CustomAuthEntryPoint;
-import com.hq.cloud.oauth2server.handler.CustomAuthcFailureHandler;
-import com.hq.cloud.oauth2server.handler.CustomAuthcSuccessHandler;
 import com.hq.cloud.oauth2server.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,23 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    /**
-     * 注册 401 处理器
-     */
-    @Autowired
-    private CustomAuthEntryPoint customAuthEntryPoint;
-
-    /**
-     * 注册 403 处理器
-     */
-    @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @Autowired
-    private CustomAuthcFailureHandler customAuthcFailureHandler;
-
-    @Autowired
-    private CustomAuthcSuccessHandler customAuthcSuccessHandler;
 
     /**
      * 拦截配置
@@ -59,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //关闭csrf，拦截所有请求
-        http.csrf().disable()
+        http.csrf().disable().antMatcher("/user")
                 .authorizeRequests().anyRequest().authenticated();
     }
 
@@ -72,8 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //替换成自己验证规则
-        //auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     /**
@@ -99,15 +76,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-//    @Bean
-//    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
-//        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthcFailureHandler);
-//        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthcSuccessHandler);
-//        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-//        customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-//        return customAuthenticationFilter;
-//
-//    }
 
 }
