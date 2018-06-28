@@ -1,7 +1,7 @@
 package com.hq;
 
-import com.hq.entity.Result;
-import com.hq.entity.User;
+import com.hq.biz.entity.Result;
+import com.hq.biz.entity.User;
 import org.junit.Test;
 
 /**

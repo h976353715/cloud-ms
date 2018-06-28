@@ -11,7 +11,7 @@ logging:
 
 spring:
   application:
-    name: gateway-server
+    name: biz-server
   redis:
       host: localhost
       port: 6379
