@@ -3,7 +3,9 @@ package com.hq.biz.service;
 import com.hq.biz.domain.Permission;
 import com.hq.biz.domain.Role;
 import com.hq.biz.domain.UserDetail;
+import com.hq.biz.entity.User;
 import com.hq.biz.feign.UserClient;
+import com.hq.biz.utils.BCryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetail userDetail = new UserDetail();
-        userClient.queryByAuth("1");
+        User user = userClient.queryByAuth("1");
         if ("huang".equals(s)) {
             Permission permission = new Permission();
             permission.setPerCode("user:edit");
@@ -43,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             roleList.add(role);
             userDetail.setRoles(roleList);
             userDetail.setUserName(s);
-            userDetail.setPassWord(com.hq.util.BCryptUtil.encode("123456"));
+            userDetail.setPassWord(BCryptUtil.encode("123456"));
         } else {
             throw new UsernameNotFoundException(s);
         }

@@ -56,8 +56,16 @@ public class Result<T> implements Serializable {
         this.respData = respData;
     }
 
+    public static <T> Result<T> returnOk() {
+        return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getDesc());
+    }
+
     public static <T> Result<T> returnOk(T t) {
         return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getDesc(), t);
+    }
+
+    public static <T> Result<T> returnFail() {
+        return new Result<>(ResultEnum.FAIL.getCode(), ResultEnum.FAIL.getDesc());
     }
 
     public static <T> Result<T> returnFail(T t) {

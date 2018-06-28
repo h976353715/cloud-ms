@@ -38,10 +38,6 @@ import java.io.IOException;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     Logger log = LoggerFactory.getLogger(ResourceServerConfig.class);
 
-
-    @Autowired(required = false)
-    private RemoteTokenServices remoteTokenServices;
-
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
@@ -86,13 +82,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .requestMatcher(authorizationHeaderRequestMatcher())
                 .authorizeRequests()
-                .antMatchers("/login").permitAll();
+                .antMatchers("hq/login","hq/logout").permitAll();
     }
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.tokenServices(tokenServices())
-                .accessDeniedHandler(customAccessDeniedHandler);
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthEntryPoint);
 
 
     }

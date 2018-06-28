@@ -1,4 +1,4 @@
-package com.hq.biz.biz.config;
+package com.hq.biz.config;
 
 import com.hq.biz.handler.CustomAccessDeniedHandler;
 import com.hq.biz.handler.CustomAuthEntryPoint;
@@ -22,7 +22,6 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
@@ -40,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private Logger log = LoggerFactory.getLogger(AuthorizationServerConfig.class);
-
 
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
@@ -111,10 +109,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new RedisTokenStore(redisConnectionFactory);
     }
 
-    @Bean
+   /* @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(jwtTokenEnhancer());
-    }
+    }*/
 
 
     /**

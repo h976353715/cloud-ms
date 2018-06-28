@@ -1,6 +1,7 @@
 package com.hq.biz.handler;
 
 import com.hq.biz.entity.Result;
+import com.hq.biz.enums.ResultEnum;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
 
-        Result result = new Result(String.valueOf(HttpServletResponse.SC_BAD_REQUEST), "token校验失败");
+        Result result = new Result(ResultEnum.LOGIN_SESSION_MISS);
         httpServletResponse.getWriter().print(result.toString());
         httpServletResponse.getWriter().flush();
 

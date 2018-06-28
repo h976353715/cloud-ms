@@ -37,8 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //关闭csrf，拦截所有请求
-        http.csrf().disable().antMatcher("/user")
-                .authorizeRequests().anyRequest().authenticated();
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/oauth/remove_token").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override

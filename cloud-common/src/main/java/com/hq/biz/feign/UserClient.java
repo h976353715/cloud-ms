@@ -16,5 +16,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface UserClient {
 
     @PostMapping("/user/authUser/{id}")
-    User queryByAuth(@PathVariable("id")String id);
+    User queryByAuth(@PathVariable("id") String id);
 }

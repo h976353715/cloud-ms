@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hq.clouduser.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.hq.entity.User" >
+<mapper namespace="com.hq.biz.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.hq.biz.entity.User" >
     <id column="id" property="id" jdbcType="CHAR" />
     <result column="username" property="userName" jdbcType="VARCHAR" />
     <result column="password" property="passWord" jdbcType="VARCHAR" />
@@ -28,7 +28,7 @@
     delete from t_user
     where id = #{id,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="com.hq.entity.User" >
+  <insert id="insert" >
     insert into t_user (id, username, password, 
       phone, email, sex, 
       delFlag, createTime, createUser, 
@@ -38,7 +38,7 @@
       #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hq.entity.User" >
+  <insert id="insertSelective" >
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hq.entity.User" >
+  <update id="updateByPrimaryKeySelective"  >
     update t_user
     <set >
       <if test="username != null" >
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hq.entity.User" >
+  <update id="updateByPrimaryKey"  >
     pdate t_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

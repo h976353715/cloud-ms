@@ -1,6 +1,9 @@
 package com.hq.biz.controller;
 
 import com.hq.biz.entity.Result;
+import com.hq.biz.entity.User;
+import com.hq.biz.enums.ResultEnum;
+import com.hq.biz.feign.OAuth2ServerClient;
 import com.hq.biz.feign.UserClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +15,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -29,8 +36,9 @@ import java.util.Collections;
  * @date 2018/5/4 10:26
  */
 @RestController
-public class TestController {
-    public static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+@RequestMapping("/hq")
+public class LoginController {
+    public static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
@@ -39,8 +47,14 @@ public class TestController {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
-    @Qualifier("userClient")
     private UserClient userClient;
+
+    @Autowired
+    private OAuth2ServerClient oAuth2ServerClient;
+
+    @Autowired
+    @Qualifier("redisTokenStore")
+    private TokenStore tokenStore;
 
     /**
      * 通过密码授权方式向授权服务器获取令牌
@@ -49,7 +63,7 @@ public class TestController {
      * @throws Exception
      */
     @PostMapping(value = "/login")
-    public Result login(@RequestParam("userName") String userName,@RequestParam("passWord") String passWord) throws Exception {
+    public Result login(@RequestParam("userName") String userName, @RequestParam("passWord") String passWord) throws Exception {
         //Http Basic 验证
         String clientAndSecret = oAuth2ClientProperties.getClientId() + ":" + oAuth2ClientProperties.getClientSecret();
         //这里需要注意为 Basic 而非 Bearer
@@ -74,6 +88,20 @@ public class TestController {
             return Result.returnFail("登录失败！");
         }
 
+    }
+
+    @RequestMapping("/logout")
+    public Result exit(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String tokenValue = authHeader.replace("bearer", "").trim();
+        Result result = oAuth2ServerClient.removeToken(tokenValue);
+        if (!ResultEnum.SUCCESS.getCode().equals(result.getRespCode())) {
+            return new Result(ResultEnum.LOGOUT_FAIL);
+        }
+
+
+
+        return new Result(ResultEnum.SUCCESS.getCode(), "注销成功");
     }
 
     @PreAuthorize("hasAuthority('user:edit')")

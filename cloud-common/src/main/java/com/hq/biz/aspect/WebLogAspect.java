@@ -1,4 +1,4 @@
-package cocom.hq.biz.aspect;
+package com.hq.biz.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -28,10 +28,10 @@ public class WebLogAspect {
 
     ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Pointcut("execution(public * cocom.hq.biz.*.controller..*.*(..))")
+    @Pointcut("execution(public * com.hq.biz.controller..*.*(..))")
     public void webLog(){}
 
-    @Pointcut("execution(public * cocom.hq.biz.*.security.web.controller..*.*(..))")
+    @Pointcut("execution(public * com.hq.biz.*.security.web.controller..*.*(..))")
     public void securityLog(){}
 
     @Before("webLog()")
