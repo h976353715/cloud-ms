@@ -1,7 +1,7 @@
 package com.hq.biz.service;
 
 
-import com.hq.biz.base.BaseService;
+import com.baomidou.mybatisplus.service.IService;
 import com.hq.biz.entity.User;
 
 /**
@@ -10,5 +10,5 @@ import com.hq.biz.entity.User;
  * @Description: UserService
  * @date 2018/4/18 10:14
  */
-public interface UserService extends BaseService<User> {
+public interface UserService extends IService<User> {
 }

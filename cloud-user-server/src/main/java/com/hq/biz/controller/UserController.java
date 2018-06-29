@@ -26,13 +26,13 @@ public class UserController extends BaseController {
 
     @GetMapping("/{id}")
     public Result<User> query(@PathVariable("id")String id){
-        User user = userService.selectByPrimaryKey(id);
+        User user = userService.selectById(id);
         return Result.returnOk(user);
     }
 
     @PostMapping("/authUser/{id}")
     public User queryByAuth(@PathVariable("id")String id){
-        User user = userService.selectByPrimaryKey(id);
+        User user = userService.selectById(id);
         return user;
     }
 }
