@@ -12,10 +12,6 @@ logging:
 spring:
   application:
     name: biz-server
-  redis:
-      host: localhost
-      port: 6379
-      password: 123
 
 
 zuul:
@@ -38,8 +34,6 @@ security:
       userInfoUri: http://localhost:8000/user
     authorization:
       check-token-access: http://localhost:8000/oauth/check_token
-  basic:
-    enabled: false
 
 
 feign:
