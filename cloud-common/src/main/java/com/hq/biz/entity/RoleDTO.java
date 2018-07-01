@@ -9,7 +9,7 @@ import com.hq.biz.base.BaseEntity;
  * @Description: 角色类
  * @date 2018/4/12 13:58
  */
-public class Role extends BaseEntity {
+public class RoleDTO extends BaseEntity {
 
     private String id;
 

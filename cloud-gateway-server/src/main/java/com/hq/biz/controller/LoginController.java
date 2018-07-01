@@ -1,7 +1,6 @@
 package com.hq.biz.controller;
 
 import com.hq.biz.entity.Result;
-import com.hq.biz.entity.User;
 import com.hq.biz.enums.ResultEnum;
 import com.hq.biz.feign.OAuth2ServerClient;
 import com.hq.biz.feign.UserClient;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Collections;
@@ -98,8 +96,6 @@ public class LoginController {
         if (!ResultEnum.SUCCESS.getCode().equals(result.getRespCode())) {
             return new Result(ResultEnum.LOGOUT_FAIL);
         }
-
-
 
         return new Result(ResultEnum.SUCCESS.getCode(), "注销成功");
     }

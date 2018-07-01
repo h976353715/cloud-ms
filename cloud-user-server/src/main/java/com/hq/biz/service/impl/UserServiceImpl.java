@@ -2,7 +2,8 @@ package com.hq.biz.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.hq.biz.dao.UserMapper;
-import com.hq.biz.entity.User;
+import com.hq.biz.entity.UserDTO;
+import com.hq.biz.model.User;
 import com.hq.biz.service.UserService;
 import org.springframework.stereotype.Service;
 

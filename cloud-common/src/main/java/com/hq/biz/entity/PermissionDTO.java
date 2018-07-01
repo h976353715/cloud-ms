@@ -9,7 +9,7 @@ import com.hq.biz.base.BaseEntity;
  * @Description: 资源类
  * @date 2018/4/12 13:58
  */
-public class Permission extends BaseEntity {
+public class PermissionDTO extends BaseEntity {
 
     private String id;
 

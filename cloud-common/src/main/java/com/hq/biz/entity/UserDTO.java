@@ -9,7 +9,7 @@ import com.hq.biz.base.BaseEntity;
  * @Description: 用户类
  * @date 2018/4/12 13:58
  */
-public class User extends BaseEntity {
+public class UserDTO extends BaseEntity {
 
     private String id;
     /**

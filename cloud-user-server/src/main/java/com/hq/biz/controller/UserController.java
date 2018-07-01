@@ -2,7 +2,8 @@ package com.hq.biz.controller;
 
 import com.hq.biz.base.BaseController;
 import com.hq.biz.entity.Result;
-import com.hq.biz.entity.User;
+import com.hq.biz.entity.UserDTO;
+import com.hq.biz.model.User;
 import com.hq.biz.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

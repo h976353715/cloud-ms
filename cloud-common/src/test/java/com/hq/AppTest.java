@@ -1,7 +1,7 @@
 package com.hq;
 
 import com.hq.biz.entity.Result;
-import com.hq.biz.entity.User;
+import com.hq.biz.entity.UserDTO;
 import org.junit.Test;
 
 /**
@@ -15,6 +15,6 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        System.out.printf(new Result<User>("ok","sss",new User()).toString());
+        System.out.printf(new Result<UserDTO>("ok","sss",new UserDTO()).toString());
     }
 }

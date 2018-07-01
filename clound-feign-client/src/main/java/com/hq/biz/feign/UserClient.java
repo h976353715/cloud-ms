@@ -1,6 +1,6 @@
 package com.hq.biz.feign;
 
-import com.hq.biz.entity.User;
+import com.hq.biz.entity.UserDTO;
 import com.hq.biz.feign.fallback.UserClientFallBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,5 +16,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface UserClient {
 
     @PostMapping("/user/authUser/{id}")
-    User queryByAuth(@PathVariable("id") String id);
+    UserDTO queryByAuth(@PathVariable("id") String id);
 }

@@ -2,7 +2,8 @@ package com.hq.biz.service;
 
 
 import com.baomidou.mybatisplus.service.IService;
-import com.hq.biz.entity.User;
+import com.hq.biz.entity.UserDTO;
+import com.hq.biz.model.User;
 
 /**
  * @author Administrator
