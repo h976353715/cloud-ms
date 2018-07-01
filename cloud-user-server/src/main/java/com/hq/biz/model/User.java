@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @Data
 @TableName("t_user")
-public class User {
+public class User extends BaseEntity{
 
     @TableId
     private String id;
