@@ -1,11 +1,11 @@
-package com.hq.biz.entity;
+package com.hq.biz.dto;
 
 
 import com.hq.biz.base.BaseEntity;
 
 /**
  * @author hq
- * @Package com.hq.entity
+ * @Package com.hq.biz.dto
  * @Description: 资源类
  * @date 2018/4/12 13:58
  */

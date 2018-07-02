@@ -2,12 +2,11 @@ package com.hq.biz.service;
 
 
 import com.baomidou.mybatisplus.service.IService;
-import com.hq.biz.entity.UserDTO;
 import com.hq.biz.model.User;
 
 /**
  * @author Administrator
- * @Package com.hq.clouduser.service
+ * @Package com.hq.biz.service
  * @Description: UserService
  * @date 2018/4/18 10:14
  */

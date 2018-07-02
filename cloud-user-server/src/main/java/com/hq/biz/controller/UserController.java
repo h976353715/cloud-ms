@@ -2,7 +2,6 @@ package com.hq.biz.controller;
 
 import com.hq.biz.base.BaseController;
 import com.hq.biz.entity.Result;
-import com.hq.biz.entity.UserDTO;
 import com.hq.biz.model.User;
 import com.hq.biz.service.UserService;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Administrator
- * @Package com.hq.clouduser.controller
+ * @Package com.hq.biz.controller
  * @Description: UserController
  * @date 2018/4/18 11:00
  */

@@ -1,12 +1,10 @@
 package com.hq.biz;
 
-import com.hq.biz.entity.UserDTO;
+import com.hq.biz.dto.UserDTO;
 import com.hq.biz.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -19,7 +17,7 @@ import java.util.Date;
 public class Test {
 
 
-    public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParseException {
+    public static void main(String[] args) {
         UserDTO userDTO = new UserDTO();
         User user = new User();
         user.setEmail("2131231232@1qdwq");
