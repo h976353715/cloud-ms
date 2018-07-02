@@ -1,6 +1,6 @@
 package com.hq.biz.feign.fallback;
 
-import com.hq.biz.entity.UserDTO;
+import com.hq.biz.dto.UserDTO;
 import com.hq.biz.feign.UserClient;
 import org.springframework.stereotype.Component;
 

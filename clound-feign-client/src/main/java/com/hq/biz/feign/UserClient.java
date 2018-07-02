@@ -1,6 +1,6 @@
 package com.hq.biz.feign;
 
-import com.hq.biz.entity.UserDTO;
+import com.hq.biz.dto.UserDTO;
 import com.hq.biz.feign.fallback.UserClientFallBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
