@@ -45,5 +45,10 @@ public class User extends BaseEntity{
     @TableField("sex")
     private Integer sex;
 
+    public User() {
+    }
 
+    public User(String userName) {
+        this.userName = userName;
+    }
 }

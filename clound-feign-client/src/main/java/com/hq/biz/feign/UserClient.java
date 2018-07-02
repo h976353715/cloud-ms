@@ -1,10 +1,11 @@
 package com.hq.biz.feign;
 
 import com.hq.biz.dto.UserDTO;
+import com.hq.biz.entity.Result;
 import com.hq.biz.feign.fallback.UserClientFallBack;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Administrator
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(value = "cloud-user",fallback = UserClientFallBack.class)
 public interface UserClient {
 
-    @PostMapping("/user/authUser/{id}")
-    UserDTO queryByAuth(@PathVariable("id") String id);
+    @PostMapping("/user/query")
+    Result<UserDTO> queryByName(@RequestParam("name") String name);
+    @PostMapping("/user/auth")
+    Result<UserDTO> queryByAuth(@RequestParam("name") String name);
 }

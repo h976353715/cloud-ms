@@ -3,6 +3,8 @@ package com.hq.biz.service;
 import com.hq.biz.domain.Permission;
 import com.hq.biz.domain.Role;
 import com.hq.biz.domain.UserDetail;
+import com.hq.biz.dto.UserDTO;
+import com.hq.biz.entity.Result;
 import com.hq.biz.feign.UserClient;
 import com.hq.biz.utils.BCryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserDetail userDetail = new UserDetail();
-        if ("huang".equals(s)) {
-            Permission permission = new Permission();
-            permission.setPerCode("user:edit");
-            List<Permission> plist = new ArrayList<>();
-            plist.add(permission);
-
-            Role role = new Role();
-            role.setRoleCode("admin");
-            role.setPermissions(plist);
-
-            List<Role> roleList = new ArrayList<>();
-            roleList.add(role);
-            userDetail.setRoles(roleList);
-            userDetail.setUserName(s);
-            userDetail.setPassWord(BCryptUtil.encode("123456"));
-        } else {
-            throw new UsernameNotFoundException(s);
-        }
-
-        return userDetail;
+        Result<UserDTO> userDTOResult = userClient.queryByAuth(s);
+        return new UserDetail();
     }
 }

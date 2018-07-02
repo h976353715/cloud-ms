@@ -1,5 +1,6 @@
 package com.hq.biz.config;
 
+import com.hq.biz.converter.CustJwtAccessTokenConverter;
 import com.hq.biz.handler.CustomAccessDeniedHandler;
 import com.hq.biz.handler.CustomAuthEntryPoint;
 import com.hq.biz.handler.CustomWebResponseExceptionTranslator;
@@ -133,11 +134,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtTokenEnhancer() {
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("hq-jwt.jks"), "hq940313".toCharArray());
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
-        return jwtAccessTokenConverter;
+       /* JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));*/
+        CustJwtAccessTokenConverter tokenConverter = new CustJwtAccessTokenConverter();
+        tokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("hq-jwt"));
+        return tokenConverter;
     }
-
     /**
      * 配置生成token的有效期以及存储方式（此处用的redis）
      *
@@ -148,7 +150,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(redisTokenStore());
         defaultTokenServices.setTokenEnhancer(jwtTokenEnhancer());
-        defaultTokenServices.setClientDetailsService(clientDetails());
         defaultTokenServices.setSupportRefreshToken(true);
         defaultTokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(30));
         defaultTokenServices.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1));

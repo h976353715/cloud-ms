@@ -1,13 +1,16 @@
 package com.hq.biz.controller;
 
 import com.hq.biz.base.BaseController;
+import com.hq.biz.dto.UserDTO;
 import com.hq.biz.entity.Result;
-import com.hq.biz.model.User;
 import com.hq.biz.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Administrator
@@ -19,20 +22,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
-    private static final Logger log =LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{id}")
-    public Result<User> query(@PathVariable("id")String id){
-        User user = userService.selectById(id);
-        return Result.returnOk(user);
+    @PostMapping("/query")
+    public Result<UserDTO> queryByName(@RequestParam("name") String name) {
+        UserDTO userDTO = userService.queryByName(name);
+        return Result.returnOk(userDTO);
     }
 
-    @PostMapping("/authUser/{id}")
-    public User queryByAuth(@PathVariable("id")String id){
-        User user = userService.selectById(id);
-        return user;
+    @PostMapping("/auth}")
+    public Result<UserDTO> queryByAuth(@RequestParam("name") String name) {
+        UserDTO userDTO = userService.queryByAuth(name);
+        return Result.returnOk(userDTO);
     }
 }

@@ -2,6 +2,9 @@ package com.hq.biz.dto;
 
 
 import com.hq.biz.base.BaseEntity;
+import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author hq
@@ -9,6 +12,7 @@ import com.hq.biz.base.BaseEntity;
  * @Description: 用户类
  * @date 2018/4/12 13:58
  */
+@Data
 public class UserDTO extends BaseEntity {
 
     private String id;
@@ -33,53 +37,15 @@ public class UserDTO extends BaseEntity {
      */
     private Integer sex;
 
-    public String getId() {
-        return id;
-    }
+    /**
+     * 资源集合
+     */
+    List<PermissionDTO> permissionList;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
+    /**
+     * 权限集合
+     */
+    List<RoleDTO> roleList;
 
 
 }

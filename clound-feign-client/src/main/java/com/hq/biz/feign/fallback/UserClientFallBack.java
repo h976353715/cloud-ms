@@ -1,6 +1,7 @@
 package com.hq.biz.feign.fallback;
 
 import com.hq.biz.dto.UserDTO;
+import com.hq.biz.entity.Result;
 import com.hq.biz.feign.UserClient;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,12 @@ import org.springframework.stereotype.Component;
 public class UserClientFallBack implements UserClient {
 
     @Override
-    public UserDTO queryByAuth(String id) {
-        return new UserDTO();
+    public Result<UserDTO> queryByName(String name) {
+        return Result.returnFail();
+    }
+
+    @Override
+    public Result<UserDTO> queryByAuth(String name) {
+        return Result.returnFail();
     }
 }

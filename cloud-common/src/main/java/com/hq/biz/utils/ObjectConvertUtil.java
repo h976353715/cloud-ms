@@ -2,7 +2,6 @@ package com.hq.biz.utils;
 
 import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class ObjectConvertUtil {
         return null;
     }
 
-    public static <T> List<T> convert(List<?> src, Class<T> tar) {
+    public static <T> List<T> convertList(List<?> src, Class<T> tar) {
 
         if (src != null) {
             List<T> tList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class ObjectConvertUtil {
         return null;
     }
 
-    public static <T> List<T> convert(List<?> src, Class<T> tar, String... ignores) {
+    public static <T> List<T> convertList(List<?> src, Class<T> tar, String... ignores) {
 
         if (src != null) {
             List<T> tList = new ArrayList<>();
