@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 /**
  * @author huangqi
@@ -18,8 +20,19 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ExceptionHandle {
     private static final Logger LOGGER = LoggerFactory.getLogger("Exception");
 
+
     @ExceptionHandler(value = HttpClientErrorException.class)
     public Result handle(HttpClientErrorException e) {
+        LOGGER.info(e.getMessage(), e);
+        return new Result(ResultEnum.SERVER_ERROR);
+    }
+    @ExceptionHandler(value = HttpServerErrorException.class)
+    public Result handle(HttpServerErrorException e) {
+        LOGGER.info(e.getMessage(), e);
+        return new Result(ResultEnum.SERVER_ERROR);
+    }
+    @ExceptionHandler(value = UnknownHttpStatusCodeException.class)
+    public Result handle(UnknownHttpStatusCodeException e) {
         LOGGER.info(e.getMessage(), e);
         return new Result(ResultEnum.SERVER_ERROR);
     }
