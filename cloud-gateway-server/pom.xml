@@ -34,7 +34,7 @@
 
         <dependency>
             <groupId>com.hq</groupId>
-            <artifactId>cloud-feign-client</artifactId>
+            <artifactId>cloud-feign</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
