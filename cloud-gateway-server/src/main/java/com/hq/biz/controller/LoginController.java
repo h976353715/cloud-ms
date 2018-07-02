@@ -76,7 +76,7 @@ public class LoginController {
             ResponseEntity<OAuth2AccessToken> responseEntity = getToken(userName, passWord);
             if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
                 DefaultOAuth2AccessToken body = (DefaultOAuth2AccessToken) responseEntity.getBody();
-                Map<String, String> tkMap = new HashMap<>();
+                Map<String, String> tkMap = new HashMap<>(5);
                 tkMap.put("access_token", body.getValue());
                 tkMap.put("refresh_token", body.getRefreshToken().getValue());
                 return Result.returnOk(tkMap);
