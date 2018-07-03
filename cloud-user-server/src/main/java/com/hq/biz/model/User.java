@@ -4,7 +4,6 @@ package com.hq.biz.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.hq.biz.base.BaseEntity;
 import lombok.Data;
 
 /**
@@ -15,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @TableName("t_user")
-public class User extends BaseEntity{
+public class User {
 
     @TableId
     private String id;

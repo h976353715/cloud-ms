@@ -1,7 +1,6 @@
 package com.hq.biz.model;
 
 
-import com.hq.biz.base.BaseEntity;
 import lombok.Data;
 
 /**

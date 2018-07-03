@@ -15,6 +15,4 @@
         <result column="updateUser" property="updateUser" jdbcType="VARCHAR"/>
     </resultMap>
 
-
-
 </mapper>

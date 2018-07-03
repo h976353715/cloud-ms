@@ -5,8 +5,6 @@ import com.hq.biz.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
-
 /**
  * @author huangqi
  * @Package com.hq.biz
@@ -21,7 +19,6 @@ public class Test {
         UserDTO userDTO = new UserDTO();
         User user = new User();
         user.setEmail("2131231232@1qdwq");
-        user.setCreateTime(new Date());
         String s =null;
         BeanUtils.copyProperties(user,userDTO,s);
         System.out.printf(userDTO.toString());
