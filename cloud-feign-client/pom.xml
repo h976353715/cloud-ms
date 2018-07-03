@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hq</groupId>
-    <artifactId>cloud-feign</artifactId>
+    <artifactId>cloud-feign-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>cloud-feign</name>
+    <name>cloud-feign-client</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
