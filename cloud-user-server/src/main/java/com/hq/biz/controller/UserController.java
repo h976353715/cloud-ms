@@ -33,7 +33,7 @@ public class UserController extends BaseController {
         return Result.returnOk(userDTO);
     }
 
-    @PostMapping("/auth}")
+    @PostMapping("/auth")
     public Result<UserDTO> queryByAuth(@RequestParam("name") String name) {
         UserDTO userDTO = userService.queryByAuth(name);
         return Result.returnOk(userDTO);

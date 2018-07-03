@@ -14,5 +14,5 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="updateUser" property="updateUser" jdbcType="VARCHAR"/>
     </resultMap>
-
+    
 </mapper>

@@ -1,20 +1,15 @@
 package com.hq.biz.service;
 
-import com.hq.biz.domain.Permission;
-import com.hq.biz.domain.Role;
-import com.hq.biz.domain.UserDetail;
+import com.hq.biz.domain.CustUserDetails;
 import com.hq.biz.dto.UserDTO;
 import com.hq.biz.entity.Result;
 import com.hq.biz.feign.UserClient;
-import com.hq.biz.utils.BCryptUtil;
+import com.hq.biz.utils.ObjectConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Administrator
@@ -24,13 +19,19 @@ import java.util.List;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    
+
     @Autowired
     private UserClient userClient;
-    
+
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Result<UserDTO> userDTOResult = userClient.queryByAuth(s);
-        return new UserDetail();
+    public UserDetails loadUserByUsername(String name) {
+        Result<UserDTO> userDTOResult = userClient.queryByAuth(name);
+        if (userDTOResult.getRespData() != null) {
+            UserDTO respData = userDTOResult.getRespData();
+            CustUserDetails userDetails = ObjectConvertUtil.convert(respData, CustUserDetails.class);
+            return userDetails;
+        } else {
+            throw new UsernameNotFoundException(name);
+        }
     }
 }

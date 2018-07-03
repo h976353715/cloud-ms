@@ -19,7 +19,7 @@ public class ObjectConvertUtil {
         if (src != null) {
             try {
                 T t = tar.newInstance();
-                BeanUtils.copyProperties(t, src);
+                BeanUtils.copyProperties(src, t);
                 return t;
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -35,7 +35,7 @@ public class ObjectConvertUtil {
         if (src != null) {
             try {
                 T t = tar.newInstance();
-                BeanUtils.copyProperties(t, src, ignores);
+                BeanUtils.copyProperties(src, t, ignores);
                 return t;
             } catch (InstantiationException e) {
                 e.printStackTrace();

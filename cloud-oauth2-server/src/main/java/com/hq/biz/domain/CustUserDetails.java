@@ -1,5 +1,7 @@
 package com.hq.biz.domain;
 
+import com.hq.biz.dto.PermissionDTO;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +16,8 @@ import java.util.Set;
  * @Description: ${TODO}(用一句话描述该文件做什么)
  * @date 2018/4/13 11:28
  */
-public class UserDetail implements UserDetails {
+@Data
+public class CustUserDetails implements UserDetails {
 
     private String id;
     /**
@@ -42,14 +45,16 @@ public class UserDetail implements UserDetails {
      * 角色合集
      */
     private List<Role> roles;
+    /**
+     * 角色合集
+     */
+    private List<PermissionDTO> permissions;
 
     @Override
     public Set<GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for(Role role : roles){
-            for (Permission permission : role.getPermissions()){
-                authorities.add(new SimpleGrantedAuthority(permission.getPerCode()));
-            }
+        for (PermissionDTO per : permissions) {
+            authorities.add(new SimpleGrantedAuthority(per.getPerCode()));
         }
         return authorities;
     }
@@ -62,47 +67,6 @@ public class UserDetail implements UserDetails {
     @Override
     public String getUsername() {
         return userName;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
     }
 
     @Override

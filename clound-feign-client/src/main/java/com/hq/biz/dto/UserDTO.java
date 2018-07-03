@@ -40,12 +40,12 @@ public class UserDTO extends BaseEntity {
     /**
      * 资源集合
      */
-    List<PermissionDTO> permissionList;
+    List<PermissionDTO> permissions;
 
     /**
      * 权限集合
      */
-    List<RoleDTO> roleList;
+    List<RoleDTO> roles;
 
 
 }

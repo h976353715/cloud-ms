@@ -1,8 +1,7 @@
 package com.hq.biz.base;
 
-import com.hq.biz.constant.Constant;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.alibaba.fastjson.JSON;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +12,7 @@ import java.util.Date;
  * @Description: 基础实体类
  * @date 2018/4/12 14:00
  */
+@Data
 public class BaseEntity implements Serializable {
 
     /**
@@ -28,52 +28,9 @@ public class BaseEntity implements Serializable {
 
     protected Date updateTime;
 
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        if (delFlag == null) {
-            delFlag = Constant.UNDELETED;
-        }
-        this.delFlag = delFlag;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+        return JSON.toJSONString(this);
     }
 
 }

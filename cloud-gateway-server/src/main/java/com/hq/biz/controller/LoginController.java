@@ -69,7 +69,7 @@ public class LoginController {
         //验证用户名密码
         Result<UserDTO> userDTOResult = userClient.queryByName(userName);
         if (!ResultEnum.SUCCESS.getCode().equals(userDTOResult.getRespCode())) {
-            return Result.returnFail(ResultEnum.LOGIN_FAIL);
+            return new Result(ResultEnum.LOGIN_FAIL);
         }
         UserDTO respData = userDTOResult.getRespData();
         if(BCryptUtil.isMatch(passWord,respData.getPassWord())){
@@ -81,10 +81,10 @@ public class LoginController {
                 tkMap.put("refresh_token", body.getRefreshToken().getValue());
                 return Result.returnOk(tkMap);
             } else {
-                return Result.returnFail(ResultEnum.LOGIN_FAIL);
+                return new Result(ResultEnum.LOGIN_FAIL);
             }
         }else {
-            return Result.returnFail(ResultEnum.LOGIN_USER_ERR);
+            return new Result(ResultEnum.LOGIN_USER_ERR);
         }
     }
 
