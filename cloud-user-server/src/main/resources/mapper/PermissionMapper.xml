@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hq.biz.dao.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hq.biz.model.Permission">
+        <id column="id" property="id" />
+        <result column="perCode" property="perCode" />
+        <result column="perPath" property="perPath" />
+        <result column="preDesc" property="preDesc" />
+        <result column="delFlag" property="delFlag" />
+        <result column="createTime" property="createTime" />
+        <result column="createUser" property="createUser" />
+        <result column="updateTime" property="updateTime" />
+        <result column="updateUser" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, perCode, perPath, preDesc, delFlag, createTime, createUser, updateTime, updateUser
+    </sql>
+
+</mapper>

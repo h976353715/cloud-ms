@@ -1,10 +1,15 @@
 package com.hq.biz.model;
 
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * @author hq
@@ -13,8 +18,10 @@ import lombok.Data;
  * @date 2018/4/12 13:58
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @TableName("t_user")
-public class User {
+public class User extends Model<Permission> {
 
     @TableId
     private String id;
@@ -49,5 +56,10 @@ public class User {
 
     public User(String userName) {
         this.userName = userName;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
     }
 }

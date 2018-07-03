@@ -1,4 +1,4 @@
-package com.hq.biz.config;
+package com.hq.biz;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -11,9 +11,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author huangqi
@@ -23,11 +21,12 @@ import java.util.List;
  */
 public class CustGenerator {
 
-    private static String filePath = "D:/test";    //文件路径
+    private static String filePath = "D:\\WorkProject\\IdeaSpace\\cloud-cms\\cloud-user-server";    //文件路径
     private static String packeName = "com.hq.biz";     //生成的包路径
     private static String authorName = "huang";     //作者
-    private static String table = "t_role";                  //table名字
+    private static String table = "t_permission";                  //table名字
     private static String prefix = "t_";                     //table前缀
+    private static String entity_prefix = "Permission";                     //生成实体的名的前缀
     private static File file = new File(filePath);
     private static String path = file.getAbsolutePath();
 
@@ -45,14 +44,14 @@ public class CustGenerator {
                         .setEnableCache(false)// XML 二级缓存
                         .setBaseResultMap(true)// XML ResultMap
                         .setBaseColumnList(true)// XML columList
-                        .setOpen(true)//生成后打开文件夹
+                        .setOpen(false)//生成后打开文件夹
                         .setAuthor(authorName)
                         // 自定义文件命名，注意 %s 会自动填充表实体属性！
-                        .setMapperName("RoleMapper")
-                        .setXmlName("RoleMapper")
-                        .setServiceName("RoleService")
-                        .setServiceImplName("RoleServiceImpl")
-                        .setControllerName("RoleController")
+                        .setMapperName(entity_prefix + "Mapper")
+                        .setXmlName(entity_prefix + "Mapper")
+                        .setServiceName(entity_prefix + "Service")
+                        .setServiceImplName(entity_prefix + "ServiceImpl")
+                        .setControllerName(entity_prefix + "Controller")
         ).setDataSource(
                 // 数据源配置
                 new DataSourceConfig()
@@ -61,7 +60,7 @@ public class CustGenerator {
                             // 自定义数据库表字段类型转换【可选】
                             @Override
                             public DbColumnType processTypeConvert(String fieldType) {
-                                System.out.println("转换类型：" + fieldType);
+                                //System.out.println("转换类型：" + fieldType);
                                 // if ( fieldType.toLowerCase().contains( "tinyint" ) ) {
                                 //    return DbColumnType.BOOLEAN;
                                 // }
@@ -125,9 +124,9 @@ public class CustGenerator {
                 new InjectionConfig() {
                     @Override
                     public void initMap() {
-                       /* Map<String, Object> map = new HashMap<>();
+                        Map<String, Object> map = new HashMap<>();
                         map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-mp");
-                        this.setMap(map);*/
+                        this.setMap(map);
                     }
                 }.setFileOutConfigList(Collections.<FileOutConfig>singletonList(new FileOutConfig("/templates/mapper.xml.vm") {
                     // 自定义输出文件目录

@@ -1,31 +1,55 @@
 package com.hq.biz.model;
 
-
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * @author hq
- * @Package com.hq.entity
- * @Description: 角色类
- * @date 2018/4/12 13:58
+ * <p>
+ * 角色表
+ * </p>
+ *
+ * @author huang
+ * @since 2018-07-03
  */
 @Data
-public class Role  {
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("t_role")
+public class Role extends Model<Role> {
 
+    private static final long serialVersionUID = 1L;
+
+    @TableId("id")
     private String id;
-    /**
-     * 角色名
-     */
+    @TableField("roleName")
     private String roleName;
-    /**
-     * 角色code
-     */
+    @TableField("roleCode")
     private String roleCode;
-    /**
-     * 是否可用 1：可用 0:禁用
-     */
+    @TableField("useFlag")
     private Integer useFlag;
+    @TableField("delFlag")
+    private Integer delFlag;
+    @TableField("createTime")
+    private Date createTime;
+    @TableField("createUser")
+    private String createUser;
+    @TableField("updateTime")
+    private Date updateTime;
+    @TableField("updateUser")
+    private String updateUser;
 
 
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
 
 }
