@@ -9,8 +9,8 @@ spring:
       server:
         git:
           uri: https://github.com/h976353715/cloud-cms.git
-          username: 976353715@qq.com
-          password: huangqi19940313
+          username: your username
+          password: your password
           #basedir: config-repo
           search-paths: cloud-config-repo
       overrideNone: true
