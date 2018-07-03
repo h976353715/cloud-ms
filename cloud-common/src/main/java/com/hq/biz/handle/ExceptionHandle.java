@@ -2,6 +2,7 @@ package com.hq.biz.handle;
 
 import com.hq.biz.entity.Result;
 import com.hq.biz.enums.ResultEnum;
+import com.hq.biz.excepiton.BusinessExcpetion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,19 +22,27 @@ public class ExceptionHandle {
     private static final Logger LOGGER = LoggerFactory.getLogger("Exception");
 
 
+    @ExceptionHandler(value = BusinessExcpetion.class)
+    public Result<BusinessExcpetion> handle(BusinessExcpetion e) {
+        LOGGER.error(e.getMessage(), e);
+        return new Result<>(e.getCode(), e.getMessage());
+    }
+
     @ExceptionHandler(value = HttpClientErrorException.class)
     public Result handle(HttpClientErrorException e) {
-        LOGGER.info(e.getMessage(), e);
+        LOGGER.error(e.getMessage(), e);
         return new Result(ResultEnum.SERVER_ERROR);
     }
+
     @ExceptionHandler(value = HttpServerErrorException.class)
     public Result handle(HttpServerErrorException e) {
-        LOGGER.info(e.getMessage(), e);
+        LOGGER.error(e.getMessage(), e);
         return new Result(ResultEnum.SERVER_ERROR);
     }
+
     @ExceptionHandler(value = UnknownHttpStatusCodeException.class)
     public Result handle(UnknownHttpStatusCodeException e) {
-        LOGGER.info(e.getMessage(), e);
+        LOGGER.error(e.getMessage(), e);
         return new Result(ResultEnum.SERVER_ERROR);
     }
 }

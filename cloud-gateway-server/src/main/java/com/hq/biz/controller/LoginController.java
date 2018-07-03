@@ -100,7 +100,6 @@ public class LoginController {
         return new Result(ResultEnum.SUCCESS.getCode(), "注销成功");
     }
 
-    @PreAuthorize("hasAuthority('user:edit')")
     @PostMapping(value = "/hello")
     public Result hello() throws Exception {
 
