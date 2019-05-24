@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hq</groupId>
-    <artifactId>cloud-user</artifactId>
+    <artifactId>cloud-user-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>cloud-user</name>
-    <description>cloud-user</description>
+    <description>cloud-user-server</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -29,7 +29,7 @@
 
         <dependency>
             <groupId>com.hq</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>cloud-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
